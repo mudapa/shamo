@@ -46,7 +46,7 @@ class ChatBubble extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'COURT VISION 2.0 SHOES COURT VISION 2.0 SHOES COURT VISION 2.0 SHOES',
+                        'COURT VISION 2.0 SHOES',
                         style: primaryTextStyle,
                         overflow: TextOverflow.ellipsis,
                       ),
