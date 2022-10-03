@@ -5,6 +5,49 @@ import 'package:shamo/widgets/theme.dart';
 class DetailChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    header() {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(90),
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 15,
+          ),
+          child: AppBar(
+            backgroundColor: bg1Color,
+            centerTitle: false,
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/image_shop_logo_online.png',
+                  width: 50,
+                ),
+                SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Shoe Store',
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: medium,
+                      ),
+                    ),
+                    Text(
+                      'Online',
+                      style: secondTextStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: light,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget previewProduct() {
       return Container(
         width: 225,
@@ -124,46 +167,7 @@ class DetailChat extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: bg3Color,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90),
-        child: Container(
-          padding: EdgeInsets.only(
-            top: 15,
-          ),
-          child: AppBar(
-            backgroundColor: bg1Color,
-            centerTitle: false,
-            title: Row(
-              children: [
-                Image.asset(
-                  'assets/image_shop_logo_online.png',
-                  width: 50,
-                ),
-                SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Shoe Store',
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: medium,
-                      ),
-                    ),
-                    Text(
-                      'Online',
-                      style: secondTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: light,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: header(),
       bottomNavigationBar: chatInput(),
       body: content(),
     );
