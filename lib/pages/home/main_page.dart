@@ -64,6 +64,7 @@ class _MainPageState extends State<MainPage> {
                   margin: EdgeInsets.only(
                     top: 20,
                     bottom: 10,
+                    right: 65,
                   ),
                   child: Image.asset(
                     'assets/icon_chat.png',
@@ -78,6 +79,7 @@ class _MainPageState extends State<MainPage> {
                   margin: EdgeInsets.only(
                     top: 20,
                     bottom: 10,
+                    left: 65,
                   ),
                   child: Image.asset(
                     'assets/icon_wishlist.png',
