@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shamo/pages/detail_chat.dart';
 import 'package:shamo/pages/edit_profile.dart';
-import 'package:shamo/pages/home/cart.dart';
+import 'package:shamo/pages/cart.dart';
 import 'package:shamo/pages/home/main_page.dart';
 import 'package:shamo/pages/product.dart';
 import 'package:shamo/pages/sign_in.dart';
