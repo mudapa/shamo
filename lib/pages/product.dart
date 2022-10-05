@@ -384,7 +384,12 @@ class _ProductState extends State<Product> {
             // NOTE: Buttons
             Container(
               width: double.infinity,
-              margin: EdgeInsets.all(defaultMargin),
+              margin: EdgeInsets.only(
+                top: 130,
+                left: defaultMargin,
+                right: defaultMargin,
+                bottom: defaultMargin,
+              ),
               child: Row(
                 children: [
                   GestureDetector(

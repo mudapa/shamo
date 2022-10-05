@@ -118,6 +118,9 @@ class Cart extends StatelessWidget {
             SizedBox(height: 30),
             Container(
               height: 50,
+              margin: EdgeInsets.symmetric(
+                horizontal: defaultMargin,
+              ),
               child: TextButton(
                 onPressed: () {},
                 style: TextButton.styleFrom(
