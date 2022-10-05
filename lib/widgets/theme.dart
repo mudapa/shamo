@@ -39,6 +39,10 @@ TextStyle purpleTextStyle = GoogleFonts.poppins(
   color: primaryColor,
 );
 
+TextStyle alertTextStyle = GoogleFonts.poppins(
+  color: alertColor,
+);
+
 TextStyle blackTextStyle = GoogleFonts.poppins(
   color: blackColor,
 );
