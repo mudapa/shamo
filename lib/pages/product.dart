@@ -347,7 +347,7 @@ class _ProductState extends State<Product> {
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(
-                top: defaultMargin,
+                top: 80,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +385,7 @@ class _ProductState extends State<Product> {
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(
-                top: 130,
+                top: 80,
                 left: defaultMargin,
                 right: defaultMargin,
                 bottom: defaultMargin,
