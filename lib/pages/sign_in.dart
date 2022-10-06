@@ -163,7 +163,7 @@ class SignIn extends StatelessWidget {
     Widget footer() {
       return Container(
         margin: EdgeInsets.only(
-          bottom: 30,
+          top: 150,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -190,27 +190,22 @@ class SignIn extends StatelessWidget {
       );
     }
 
+    Widget content() {
+      return ListView(
+        padding: EdgeInsets.all(defaultMargin),
+        children: [
+          header(),
+          emailInput(),
+          passwordInput(),
+          signInButton(),
+          footer(),
+        ],
+      );
+    }
+
     return Scaffold(
       backgroundColor: bg1Color,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              emailInput(),
-              passwordInput(),
-              signInButton(),
-              Spacer(),
-              footer(),
-            ],
-          ),
-        ),
-      ),
+      body: content(),
     );
   }
 }

@@ -265,7 +265,7 @@ class SignUp extends StatelessWidget {
     Widget footer() {
       return Container(
         margin: EdgeInsets.only(
-          bottom: 30,
+          top: 150,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -292,29 +292,24 @@ class SignUp extends StatelessWidget {
       );
     }
 
+    Widget content() {
+      return ListView(
+        padding: EdgeInsets.all(defaultMargin),
+        children: [
+          header(),
+          fullNameInput(),
+          usernameInput(),
+          emailInput(),
+          passwordInput(),
+          signUpButton(),
+          footer(),
+        ],
+      );
+    }
+
     return Scaffold(
       backgroundColor: bg1Color,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              fullNameInput(),
-              usernameInput(),
-              emailInput(),
-              passwordInput(),
-              signUpButton(),
-              Spacer(),
-              footer(),
-            ],
-          ),
-        ),
-      ),
+      body: content(),
     );
   }
 }

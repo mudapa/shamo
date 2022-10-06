@@ -348,6 +348,7 @@ class _ProductState extends State<Product> {
               width: double.infinity,
               margin: EdgeInsets.only(
                 top: 80,
+                bottom: 50,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,12 +385,7 @@ class _ProductState extends State<Product> {
             // NOTE: Buttons
             Container(
               width: double.infinity,
-              margin: EdgeInsets.only(
-                top: 80,
-                left: defaultMargin,
-                right: defaultMargin,
-                bottom: defaultMargin,
-              ),
+              margin: EdgeInsets.all(defaultMargin),
               child: Row(
                 children: [
                   GestureDetector(
