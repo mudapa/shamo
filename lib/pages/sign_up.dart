@@ -1,26 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo/providers/auth_provider.dart';
+import 'package:shamo/widgets/loading_button.dart';
 import 'package:shamo/widgets/theme.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   TextEditingController nameController = TextEditingController(text: '');
+
   TextEditingController usernameController = TextEditingController(text: '');
+
   TextEditingController emailController = TextEditingController(text: '');
+
   TextEditingController passwordController = TextEditingController(text: '');
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
+
       if (await authProvider.register(
         name: nameController.text,
         username: usernameController.text,
         email: emailController.text,
         password: passwordController.text,
       )) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: secondColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
+            ),
+            content: Text(
+              'Register Success',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
         Navigator.pushNamed(context, '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
+            ),
+            content: Text(
+              'Register Fail!',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
       }
+
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget header() {
@@ -322,7 +370,7 @@ class SignUp extends StatelessWidget {
           usernameInput(),
           emailInput(),
           passwordInput(),
-          signUpButton(),
+          isLoading ? LoadingButton() : signUpButton(),
           footer(),
         ],
       );
