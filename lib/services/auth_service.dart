@@ -4,7 +4,7 @@ import 'package:shamo/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  String baseUrl = 'http://192.168.1.254:8000/api';
+  String baseUrl = 'http://192.168.79.206:8000/api';
 
   // Note: Register
   Future<UserModel> register({
@@ -62,8 +62,9 @@ class AuthService {
     print(response.body);
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      UserModel user = UserModel.fromJson(data['data']);
+      var data = jsonDecode(response.body)['data'];
+      UserModel user = UserModel.fromJson(data['user']);
+      user.token = 'Bearer ' + data['access_token'];
 
       return user;
     } else {
