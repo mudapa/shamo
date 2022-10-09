@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shamo/models/product_model.dart';
+import 'package:shamo/providers/cart_provider.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/widgets/theme.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -11,7 +14,7 @@ class Product extends StatefulWidget {
 }
 
 class _ProductState extends State<Product> {
-  bool isWishlist = false;
+  // bool isWishlist = false;
   int currentIndex = 0;
 
   List images = [
@@ -34,6 +37,9 @@ class _ProductState extends State<Product> {
 
   @override
   Widget build(BuildContext context) {
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     Future<void> showSuccessDialog() async {
       return showDialog(
         context: context,
@@ -81,7 +87,9 @@ class _ProductState extends State<Product> {
                     width: 144,
                     height: 44,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/cart');
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
@@ -243,10 +251,9 @@ class _ProductState extends State<Product> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        isWishlist = !isWishlist;
-                      });
-                      if (isWishlist) {
+                      wishlistProvider.setProduct(widget.product);
+
+                      if (wishlistProvider.isWishlist(widget.product)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: secondColor,
@@ -279,7 +286,7 @@ class _ProductState extends State<Product> {
                       }
                     },
                     child: Image.asset(
-                      isWishlist
+                      wishlistProvider.isWishlist(widget.product)
                           ? 'assets/button_wishlist_blue.png'
                           : 'assets/button_wishlist.png',
                       width: 46,
@@ -413,6 +420,7 @@ class _ProductState extends State<Product> {
                       height: 54,
                       child: TextButton(
                         onPressed: () {
+                          cartProvider.addCart(widget.product);
                           showSuccessDialog();
                         },
                         style: TextButton.styleFrom(
