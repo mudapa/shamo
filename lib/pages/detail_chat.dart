@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/models/message_model.dart';
+import 'package:shamo/models/product_model.dart';
+import 'package:shamo/pages/product.dart';
+import 'package:shamo/providers/auth_provider.dart';
+import 'package:shamo/services/message_service.dart';
 import 'package:shamo/widgets/chat_bubble.dart';
 import 'package:shamo/widgets/theme.dart';
 
-class DetailChat extends StatelessWidget {
+class DetailChat extends StatefulWidget {
+  ProductModel product;
+  DetailChat(this.product);
+
+  @override
+  State<DetailChat> createState() => _DetailChatState();
+}
+
+class _DetailChatState extends State<DetailChat> {
+  TextEditingController messageController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    handleAddMessage() async {
+      await MessageService().addMessage(
+        user: authProvider.user,
+        isFromUser: true,
+        message: messageController.text,
+        product: widget.product,
+      );
+
+      setState(() {
+        widget.product = UninitializedProductModel();
+        messageController.text = '';
+      });
+    }
+
     header() {
       return AppBar(
         toolbarHeight: 87,
@@ -59,8 +90,8 @@ class DetailChat extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/image_shoes.png',
+              child: Image.network(
+                widget.product.galleries[0].url,
                 width: 54,
               ),
             ),
@@ -71,13 +102,13 @@ class DetailChat extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'COURT VISION 2.0',
+                    widget.product.name,
                     style: primaryTextStyle,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(width: 2),
                   Text(
-                    '\$57,15',
+                    '\$${widget.product.price}',
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                     ),
@@ -86,7 +117,11 @@ class DetailChat extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  widget.product = UninitializedProductModel();
+                });
+              },
               child: Image.asset(
                 'assets/button_close.png',
                 width: 22,
@@ -104,7 +139,9 @@ class DetailChat extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            previewProduct(),
+            widget.product is UninitializedProductModel
+                ? SizedBox()
+                : previewProduct(),
             Row(
               children: [
                 Expanded(
@@ -119,6 +156,7 @@ class DetailChat extends StatelessWidget {
                     ),
                     child: Center(
                       child: TextFormField(
+                        controller: messageController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Type Message ...',
@@ -129,9 +167,12 @@ class DetailChat extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                Image.asset(
-                  'assets/button_send.png',
-                  width: 45,
+                GestureDetector(
+                  onTap: handleAddMessage,
+                  child: Image.asset(
+                    'assets/button_send.png',
+                    width: 45,
+                  ),
                 ),
               ],
             ),
@@ -141,33 +182,36 @@ class DetailChat extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.only(
-          left: defaultMargin,
-          right: defaultMargin,
-          bottom: defaultMargin,
-        ),
-        children: [
-          ChatBubble(
-            isSender: true,
-            text: 'Hi, This item is still available?',
-            hasProduct: true,
-          ),
-          ChatBubble(
-            isSender: true,
-            text: 'p',
-            hasProduct: true,
-          ),
-          ChatBubble(
-            isSender: true,
-            text: 'p',
-            hasProduct: true,
-          ),
-          ChatBubble(
-            isSender: false,
-            text: 'Good night, This item is only available in size 42 and 43',
-          ),
-        ],
+      return StreamBuilder<List<MessageModel>>(
+        stream:
+            MessageService().getMessagesByUserId(userId: authProvider.user.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              padding: EdgeInsets.only(
+                left: defaultMargin,
+                right: defaultMargin,
+                bottom: defaultMargin,
+              ),
+              children: [
+                ChatBubble(
+                  isSender: true,
+                  text: 'Hi, This item is still available?',
+                  hasProduct: true,
+                ),
+                ChatBubble(
+                  isSender: false,
+                  text:
+                      'Good night, This item is only available in size 42 and 43',
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       );
     }
 

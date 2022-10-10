@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo/pages/checkout.dart';
@@ -13,9 +14,14 @@ import 'package:shamo/pages/splash_screen.dart';
 import 'package:shamo/providers/auth_provider.dart';
 import 'package:shamo/providers/cart_provider.dart';
 import 'package:shamo/providers/product_provider.dart';
+import 'package:shamo/providers/transaction_provider.dart';
 import 'package:shamo/providers/wishlist_provider.dart';
 
-void main() => runApp(Shamo());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(Shamo());
+}
 
 class Shamo extends StatelessWidget {
   @override
@@ -34,6 +40,9 @@ class Shamo extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => TransactionProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -42,7 +51,6 @@ class Shamo extends StatelessWidget {
           '/sign-in': (context) => SignIn(),
           '/sign-up': (context) => SignUp(),
           '/home': (context) => MainPage(),
-          '/detail-chat': (context) => DetailChat(),
           '/edit-profile': (context) => EditProfile(),
           '/cart': (context) => Cart(),
           '/checkout': (context) => Checkout(),

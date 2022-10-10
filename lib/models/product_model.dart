@@ -2,31 +2,31 @@ import 'package:shamo/models/category_model.dart';
 import 'package:shamo/models/gallery_model.dart';
 
 class ProductModel {
-  int id;
+  int? id;
   String name;
   double price;
   String description;
   String? tags;
   CategoryModel category;
-  DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   List<GalleryModel> galleries;
 
   ProductModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.price,
     required this.description,
     this.tags,
     required this.category,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     required this.galleries,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'],
+      id: json['id'] as int?,
       name: json['name'],
       price: double.parse(json['price'].toString()),
       description: json['description'],
@@ -35,8 +35,8 @@ class ProductModel {
       galleries: json['galleries']
           .map<GalleryModel>((gallery) => GalleryModel.fromJson(gallery))
           .toList(),
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: DateTime.parse(json['created_at'] ?? ""),
+      updatedAt: DateTime.parse(json['updated_at'] ?? ""),
     );
   }
 
@@ -49,8 +49,26 @@ class ProductModel {
       'tags': tags,
       'category': category.toJson(),
       'galleries': galleries.map((gallery) => gallery.toJson()).toList(),
-      'createdAt': createdAt.toString(),
-      'updatedAt': updatedAt.toString(),
+      'created_at': createdAt.toString(),
+      'updateda_at': updatedAt.toString(),
     };
   }
+}
+
+class UninitializedProductModel extends ProductModel {
+  UninitializedProductModel()
+      : super(
+          id: null,
+          name: '',
+          price: 0,
+          description: '',
+          tags: '',
+          category: CategoryModel(
+            id: 0,
+            name: "",
+          ),
+          galleries: [],
+          createdAt: null,
+          updatedAt: null,
+        );
 }

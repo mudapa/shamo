@@ -13,7 +13,7 @@ class CartProvider with ChangeNotifier {
   }
 
   addCart(ProductModel product) {
-    if (!productExist(product)) {
+    if (productExist(product)) {
       int index =
           _carts.indexWhere((element) => element.product.id == product.id);
       _carts[index].quantity++;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo/models/product_model.dart';
+import 'package:shamo/pages/detail_chat.dart';
 import 'package:shamo/providers/cart_provider.dart';
 import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/widgets/theme.dart';
@@ -8,7 +9,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class Product extends StatefulWidget {
   final ProductModel product;
-  Product(this.product);
+  const Product(this.product, {super.key});
   @override
   State<Product> createState() => _ProductState();
 }
@@ -400,7 +401,12 @@ class _ProductState extends State<Product> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/detail-chat');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailChat(widget.product),
+                        ),
+                      );
                     },
                     child: Container(
                       width: 54,

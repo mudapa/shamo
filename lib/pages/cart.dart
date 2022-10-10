@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/providers/cart_provider.dart';
 import 'package:shamo/widgets/cart_card.dart';
 import 'package:shamo/widgets/theme.dart';
 
 class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     header() {
       return AppBar(
         toolbarHeight: 87,
@@ -22,53 +26,51 @@ class Cart extends StatelessWidget {
     }
 
     Widget emptyCart() {
-      return Expanded(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(color: bg3Color),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/icon_empty_cart.png',
-                width: 80,
+      return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(color: bg3Color),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icon_empty_cart.png',
+              width: 80,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Opss! Your Cart is Empty',
+              style: primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
               ),
-              SizedBox(height: 20),
-              Text(
-                'Opss! Your Cart is Empty',
-                style: primaryTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: medium,
-                ),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Let\'s find your favorite shoes',
-                style: secondTextStyle,
-              ),
-              SizedBox(height: 20),
-              Container(
-                height: 44,
-                width: 152,
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            ),
+            SizedBox(height: 12),
+            Text(
+              'Let\'s find your favorite shoes',
+              style: secondTextStyle,
+            ),
+            SizedBox(height: 20),
+            Container(
+              height: 44,
+              width: 152,
+              child: TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
-                    'Explore Store',
-                    style: primaryTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
+                ),
+                child: Text(
+                  'Explore Store',
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -78,9 +80,11 @@ class Cart extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: defaultMargin,
         ),
-        children: [
-          CartCard(),
-        ],
+        children: cartProvider.carts
+            .map(
+              (cart) => CartCard(cart),
+            )
+            .toList(),
       );
     }
 
@@ -101,7 +105,7 @@ class Cart extends StatelessWidget {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$287,96',
+                    '\$${cartProvider.totalPrice()}',
                     style: priceTextStyle.copyWith(
                       fontWeight: semibold,
                       fontSize: 16,
@@ -160,8 +164,9 @@ class Cart extends StatelessWidget {
     return Scaffold(
       backgroundColor: bg3Color,
       appBar: header(),
-      body: content(),
-      bottomNavigationBar: customBottomNav(),
+      body: cartProvider.carts.length == 0 ? emptyCart() : content(),
+      bottomNavigationBar:
+          cartProvider.carts.length == 0 ? SizedBox() : customBottomNav(),
     );
   }
 }
