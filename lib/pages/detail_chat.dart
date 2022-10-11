@@ -10,7 +10,7 @@ import 'package:shamo/widgets/theme.dart';
 
 class DetailChat extends StatefulWidget {
   ProductModel product;
-  DetailChat(this.product);
+  DetailChat(this.product, {super.key});
 
   @override
   State<DetailChat> createState() => _DetailChatState();
@@ -22,6 +22,7 @@ class _DetailChatState extends State<DetailChat> {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
     handleAddMessage() async {
       await MessageService().addMessage(
         user: authProvider.user,
@@ -193,18 +194,15 @@ class _DetailChatState extends State<DetailChat> {
                 right: defaultMargin,
                 bottom: defaultMargin,
               ),
-              children: [
-                ChatBubble(
-                  isSender: true,
-                  text: 'Hi, This item is still available?',
-                  hasProduct: true,
-                ),
-                ChatBubble(
-                  isSender: false,
-                  text:
-                      'Good night, This item is only available in size 42 and 43',
-                ),
-              ],
+              children: snapshot.data!
+                  .map(
+                    (MessageModel message) => ChatBubble(
+                      isSender: message.isFromUser,
+                      text: message.message,
+                      product: message.product,
+                    ),
+                  )
+                  .toList(),
             );
           } else {
             return Center(

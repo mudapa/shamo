@@ -1,5 +1,5 @@
 class UserModel {
-  int? id;
+  int id;
   String? name;
   String? email;
   String? username;
@@ -7,7 +7,7 @@ class UserModel {
   String token;
 
   UserModel({
-    this.id,
+    required this.id,
     this.name,
     this.email,
     this.username,
@@ -17,7 +17,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as int?,
+      id: json['id'],
       name: json['name'] as String?,
       email: json['email'] as String?,
       username: json['username'] as String?,

@@ -1,7 +1,7 @@
 import 'package:shamo/models/product_model.dart';
 
 class MessageModel {
-  String? message;
+  String message;
   int? userId;
   String? userName;
   String? userImage;
@@ -11,7 +11,7 @@ class MessageModel {
   DateTime? updatedAt;
 
   MessageModel({
-    this.message,
+    required this.message,
     this.userId,
     this.userName,
     this.userImage,
@@ -31,8 +31,8 @@ class MessageModel {
       product: json['product'].isEmpty
           ? UninitializedProductModel()
           : ProductModel.fromJson(json['product']),
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: DateTime.parse(json['createdAt'] ?? ""),
+      updatedAt: DateTime.parse(json['updatedAt'] ?? ""),
     );
   }
 
@@ -44,8 +44,8 @@ class MessageModel {
       'userImage': userImage,
       'isFromUser': isFromUser,
       'product': product is UninitializedProductModel ? {} : product.toJson(),
-      'created_at': createdAt.toString(),
-      'updated_at': updatedAt.toString(),
+      'createdAt': createdAt.toString(),
+      'updatedAt': updatedAt.toString(),
     };
   }
 }

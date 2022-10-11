@@ -50,7 +50,7 @@ class ProductModel {
       'category': category.toJson(),
       'galleries': galleries.map((gallery) => gallery.toJson()).toList(),
       'created_at': createdAt.toString(),
-      'updateda_at': updatedAt.toString(),
+      'updated_at': updatedAt.toString(),
     };
   }
 }
