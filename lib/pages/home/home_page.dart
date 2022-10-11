@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/models/user_model.dart';
+import 'package:shamo/providers/auth_provider.dart';
+import 'package:shamo/providers/product_provider.dart';
 import 'package:shamo/widgets/product_cart.dart';
 import 'package:shamo/widgets/product_tile.dart';
 import 'package:shamo/widgets/theme.dart';
@@ -6,6 +10,13 @@ import 'package:shamo/widgets/theme.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // User authProvider
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    UserModel user = authProvider.user;
+
+    // Product productProvider
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     Widget header() {
       return Container(
         margin: EdgeInsets.only(
@@ -20,14 +31,14 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo, Dek',
+                    'Hallo, ${user.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 24,
                       fontWeight: semibold,
                     ),
                   ),
                   Text(
-                    '@turuDek_turu',
+                    '@${user.username}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),
@@ -41,7 +52,9 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage('assets/image_profile.png'),
+                  image: NetworkImage(
+                    user.profilePhotoUrl!,
+                  ),
                 ),
               ),
             ),
@@ -196,12 +209,12 @@ class HomePage extends StatelessWidget {
             children: [
               SizedBox(width: defaultMargin),
               Row(
-                children: [
-                  ProductCart(),
-                  ProductCart(),
-                  ProductCart(),
-                ],
-              )
+                children: productProvider.products
+                    .map(
+                      (product) => ProductCart(product),
+                    )
+                    .toList(),
+              ),
             ],
           ),
         ),
@@ -229,12 +242,11 @@ class HomePage extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(top: 14),
         child: Column(
-          children: [
-            ProductTile(),
-            ProductTile(),
-            ProductTile(),
-            ProductTile(),
-          ],
+          children: productProvider.products
+              .map(
+                (product) => ProductTile(product),
+              )
+              .toList(),
         ),
       );
     }
